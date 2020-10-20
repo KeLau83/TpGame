@@ -1,7 +1,8 @@
 <?php 
 namespace App\Model;
-class Fight extends Charactere {
-    public function cheCkIfThereAreWinner($charac1, $charac2) {
+class Fight {
+
+    public function cheCkIfThereAreWinner(Charactere $charac1,Charactere  $charac2) {
         $hpCharac1 = $charac1 -> getHealthPoints();
         $hpCharac2 = $charac2 -> getHealthPoints();
         $winner = null;

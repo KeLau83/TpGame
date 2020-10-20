@@ -16,10 +16,11 @@ class CharactereManager
 
   public function add(Charactere $charactere)
   {
-    $q = $this->_db->prepare('INSERT INTO characters(id, name, healthPoints) VALUES(:id, :name, :healthPoints)');
+    $q = $this->_db->prepare('INSERT INTO characters(id, name, healthPoints, Class) VALUES(:id, :name, :healthPoints, :Class)');
     $q->bindValue(':id', $charactere->getId(), PDO::PARAM_INT);
     $q->bindValue(':name',$charactere->getName());
     $q->bindValue(':healthPoints', $charactere->getHealthPoints(), PDO::PARAM_INT);
+    $q->bindValue(':Class', $charactere->getCLass());
 
     $q->execute();
   }
@@ -43,9 +44,11 @@ class CharactereManager
   public function get($id)
   {
     $id = (int)$id;
-    $q = $this->_db->query('SELECT * FROM characters WHERE id = '.$id);
+    $q = $this->_db->query('SELECT * FROM characters WHERE id = '. $id);
     $donnees = $q->fetch(PDO::FETCH_ASSOC);
-    $charac = new Charactere();
+    $class = $donnees['Class'];
+    $class = 'App\\Model\\ClassCharacter\\' . $class;
+    $charac = new $class();
     $charac -> hydrate($donnees);
     return $charac;
   }
@@ -59,7 +62,9 @@ class CharactereManager
 
     while ($data = $q->fetch(PDO::FETCH_ASSOC))
     {
-      $charact = new Charactere;
+      $class = $data['Class'];
+      $class = 'App\\Model\\ClassCharacter\\' . $class;
+      $charact = new $class;
       $charact -> hydrate($data);
       $charactere[] = $charact;
     }

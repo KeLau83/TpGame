@@ -3,6 +3,7 @@
 require ('./autoload.php');
 
 use App\Model\Charactere;
+use App\Model\ClassCharacter\WhiteWizard;
 use PHPUnit\Framework\TestCase;
 
 final class CharacterTest extends TestCase
@@ -10,10 +11,10 @@ final class CharacterTest extends TestCase
     public function testCanSetStrengthWithPositiveValue(): void
     {
         // Initialisation
-        $character = new Charactere();
+        $character = new WhiteWizard('José');
 
         // Execution
-        $newStrength = 10;
+        $newStrength = 1000;
         $character->setStrength($newStrength);
 
         // Validation
@@ -26,7 +27,7 @@ final class CharacterTest extends TestCase
         $character = new Charactere();
 
         // Execution
-        $newStrength =  - 10;
+        $newStrength =  10;
         $character->setStrength($newStrength);
 
         // Validation

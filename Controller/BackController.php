@@ -37,9 +37,8 @@ public static function serverRequestIsPost() {
 
 public static function getFirstCharac() {
     if(isset($_SESSION['Charac1'])){
-        $charac = New Charactere();
-        $firstCharac = $_SESSION['Charac1'];
-        $firstCharac = $charac -> getName();
+        $firstCharac = unserialize($_SESSION['Charac1']);
+        $firstCharac = $firstCharac -> getName();
         return $firstCharac;
     }
     return null;

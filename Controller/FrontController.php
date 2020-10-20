@@ -33,6 +33,7 @@ class FrontController extends BackController{
     public function Create() {
 
        $nameCharac =  BackController::issetWithPost('Charac');
+       $class = 'App\\Model\\ClassCharacter\\' . BackController::issetWithPost('class');
        $dataBase = new DataBase();
        $db = $dataBase -> connectToDB();
        $characManager = new CharactereManager($db);
@@ -42,7 +43,7 @@ class FrontController extends BackController{
             return;
         }
 
-        $charac = new Charactere($nameCharac);
+        $charac = new $class($nameCharac);
         $characManager -> add($charac);
         $characManager -> storeCharacInSession($charac); 
     }
@@ -76,12 +77,16 @@ class FrontController extends BackController{
         $characManager = new CharactereManager($db);
         $charac1 = unserialize($_SESSION['Charac1']) ;
         $charac2 = unserialize($_SESSION['Charac2']);
-        $fighter1 = $charac1 -> getInfoAboutCharac($charac2);
-        $fighter2 = $charac2 -> getInfoAboutCharac($charac1);
+        $damageCharac1 = $charac1 -> hit($charac2, 3);
+        $damageCharac2  = $charac2 -> hit($charac1);
+        $fighter1 = $charac1 -> getInfoAboutCharac();
+        $fighter2 = $charac2 -> getInfoAboutCharac();
         $winner = $fight -> cheCkIfThereAreWinner($charac1, $charac2);
         $viewData = [
             'fighter1' => $fighter1,
             'fighter2' => $fighter2,
+            'damageCharac1' => $damageCharac1,
+            'damageCharac2' => $damageCharac2,
             'winner' => $winner
         ];
         $_SESSION['Charac1'] =  serialize($charac1);
